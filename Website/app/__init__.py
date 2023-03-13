@@ -8,4 +8,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from app import views, models
-from .models import User
+#from .models import User
