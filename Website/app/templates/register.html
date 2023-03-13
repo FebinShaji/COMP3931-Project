@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="h-100 gradient-form" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+                <div class="card rounded-3 text-black">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <div class="card-body p-md-5 mx-md-4">
+
+                                <div class="text-center">
+                                    <p id="thick" href="/">Sign Up to FitZone</p>
+                                </div>
+
+                                <form method="POST" action="/register">
+                                    {{ form.hidden_tag() }}
+                                    <div class="field">
+                                        <div class="control">
+                                            <input id="input_text" name="Firstname" placeholder="First name">
+                                            {% for error in form.FirstName.errors %}
+                                            <div class="alert alert-danger w-100" role="alert">
+                                                [{{ error }}]
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <br>
+                                            <input id="input_text" name="Surname" placeholder="Surname">
+                                            {% for error in form.Surname.errors %}
+                                            <div class="alert alert-danger w-100" role="alert">
+                                                [{{ error }}]
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <br>
+                                            <input id="input_text" type="email" name="Email" placeholder="Email" hx-post="/check-email/" hx-target="#email-err" hx-trigger="keyup">
+                                            <div class="text-danger mt-2" id="email-err"></div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="control">
+                                            <br>
+                                            <input id="input_text" name="Username" placeholder="Username" hx-post="/check-username/" hx-target="#username-err" hx-trigger="keyup">
+                                            <div class="text-danger mt-2" id="username-err"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <br>
+                                            <input id="input_text" type="password" name="Password"
+                                                placeholder="Password">
+                                            {% for error in form.Password.errors %}
+                                            <div class="alert alert-danger w-100" role="alert">
+                                                [{{ error }}]
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="control">
+                                            <br>
+                                            <input id="input_text" type="password" name="Confirm Password" placeholder="Confirm Password" hx-post="/check-password/" hx-target="#password-err" hx-trigger="keyup">
+                                            <div class="text-danger mt-2" id="password-err"></div>
+                                        </div>
+                                    </div>
+
+                                    <div></div>
+
+                                    <br>
+
+                                    <div class="text-center">
+                                        <br>
+                                        <button
+                                            class="button btn btn-dark rounded-pill is-block is-info is-fullwidth">Sign Up</button>
+                                    </div>
+
+                                    <br>
+                                    <div class="text-center">
+                                        <a href="/login" class="card-text align-right">Have an account? Sign in</a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-6 d-flex align-items-center home-image "
+            style="background-image: url(/static/images/LoginPicture.png)">
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</section>
+
+{% endblock %}
