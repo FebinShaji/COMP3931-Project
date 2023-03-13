@@ -176,3 +176,51 @@ def update(id):
     <button hx-get="/details/{id}" class="btn btn-dark">Click To Edit</button>
     """
     return response
+
+@app.route('/change_password/<int:id>', methods=['GET', 'POST'])
+def changepassword1(id):
+    if session.get('user') == None:
+        flash("Need to Login to access")
+        print("Need to Login to access")
+        return redirect(url_for('home'))
+    
+    response = f"""
+    <form hx-put="/update2/{id}" hx-target="this">
+        <div class="field">
+            <div class="control">
+                <input class="scooteridbox" id="input_text_dashboard" type="Password" name="Password" placeholder="New password">
+            </div>
+        </div>
+        <br>
+        <div class="field">
+            <div class="control">
+                <input class="scooteridbox" id="input_text_dashboard" type="Password" name="Confirm Password" placeholder="Confirm new password" hx-post="/check-password/" hx-target="#password-err" hx-trigger="keyup">
+                    <div class="text-danger mt-2" id="password-err"></div>
+            </div>
+        </div>
+        <br>
+        <div class="field">
+            <button class="button btn btn-dark rounded-pill is-block is-info is-fullwidth card-text">Change Password</button>
+        </div>
+    </form>
+    """
+    return response
+
+@app.route("/update2/<int:id>", methods=["PUT"])
+def update2(id):
+    user = models.User.query.get(session.get('user'))
+    NewPassword = request.form.get('Password')
+    Confirm_NewPassword = request.form.get('Confirm Password')
+    if NewPassword == Confirm_NewPassword:
+        user.password = generate_password_hash(NewPassword, method='pbkdf2:sha256')
+        db.session.commit()
+        response = f"""
+        <p class="card-text"><button class="btn btn-dark" hx-get="/change_password/{id}">Forgot your password? Click here to change it.</button></p>
+        """
+        return response
+    else:
+        flash("The passwords don't match!", 'error')
+        response = f"""
+        <p class="card-text"><button class="btn btn-dark" hx-get="/change_password/{id}">Forgot your password? Click here to change it.</button></p>
+        """
+        return response
