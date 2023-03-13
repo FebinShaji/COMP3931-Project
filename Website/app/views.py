@@ -116,3 +116,63 @@ def dashboard():
     userId=session.get('user')
     userDetails=models.User.query.filter_by(id=userId)
     return render_template('dashboard.html', title='Dashboard', userDetails=userDetails)
+
+@app.route("/details/<int:id>", methods=["GET"])
+def details(id):
+    user = User.query.get(id)
+    response = f"""
+    <form hx-put="/update/{id}" hx-target="this">
+        <div>
+            <label>Username</label>
+            <input type="text" name="Username" value="{user.username}" hx-post="/check-username/" hx-target="#username-err" hx-trigger="keyup">
+            <div class="text-danger mt-2" id="username-err"></div>
+        </div>
+        <div class="form-group">
+            <label>First Name</label>
+            <input type="text" name="firstName" value="{user.firstName}">
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" name="lastName" value="{user.surName}">
+        </div>
+        <div>
+            <label>Email Address</label>
+            <input type="email" name="Email" value="{user.email}" hx-post="/check-email/" hx-target="#email-err" hx-trigger="keyup">
+            <div class="text-danger mt-2" id="email-err"></div>
+        </div>
+        <button class="btn btn-dark">Submit</button>
+        <button class="btn btn-dark" hx-get="/cancel/{id}">Cancel</button>
+    </form> 
+    """
+    return response
+
+@app.route("/cancel/<int:id>", methods=["GET"])
+def cancel(id):
+    user = User.query.get(id)
+
+    response = f"""
+    <div><label>Username</label>: { user.username }</div>
+    <div><label>First Names</label>: { user.firstName }</div>
+    <div><label>Last Name</label>: { user.surName }</div>
+    <div><label>Email</label>: { user.email }</div>
+    <button hx-get="/details/{id}" class="btn btn-dark">Click To Edit</button>
+    """
+    return response
+
+@app.route("/update/<int:id>", methods=["PUT"])
+def update(id):
+    user = models.User.query.get(id)
+    user.username = request.form["Username"]
+    user.firstName = request.form["firstName"]
+    user.surName = request.form["lastName"]
+    user.email = request.form["Email"]
+    db.session.commit()
+    
+    response = f"""
+    <div><label>Username</label>: { user.username }</div>
+    <div><label>First Names</label>: { user.firstName }</div>
+    <div><label>Last Name</label>: { user.surName }</div>
+    <div><label>Email</label>: { user.email }</div>
+    <button hx-get="/details/{id}" class="btn btn-dark">Click To Edit</button>
+    """
+    return response
