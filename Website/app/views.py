@@ -77,6 +77,31 @@ def register():
 
     return render_template('register.html', title='Register', form=form)
 
+@app.route("/check-username/", methods=['GET', 'POST'])
+def check_username():
+    username = request.form['Username']
+    checkUser = models.User.query.filter_by(username=username).first()
+    if checkUser:
+        return "That Username Already Exists"
+    else:
+        return "" 
+@app.route("/check-email/", methods=['GET', 'POST'])
+def check_email():
+    email = request.form['Email']
+    checkUser = models.User.query.filter_by(email=email).first()
+    if checkUser:
+        return "That Email Is Registered To Another Account"
+    else:
+        return ""
+@app.route("/check-password/", methods=['GET', 'POST'])
+def check_password():
+    password1 = request.form['Password']
+    password2 = request.form['Confirm Password']
+    if password1 != password2:
+        return "These Passwords Don't Match"
+    else:
+        return ""
+    
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     global result
