@@ -9,6 +9,10 @@ from app import db, models
 def home():
     return render_template('home.html')
 
+@app.route('/aboutUs', methods=['GET', 'POST'])
+def aboutUs():
+    return render_template('aboutUs.html')
+
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.clear()
