@@ -1,0 +1,50 @@
+{% extends "base2.html" %}
+
+{% block content %}
+
+<section class="section justify-content-center" style="background-color: #eee;">
+    <div class="container section-intro">
+        <br>
+        <h3 class="mb-4 text-center" id="thick">
+            Your Profile
+        </h3>
+        <div class="row ar-center justify-content-center">
+            <div class="card-deck">
+                <div class="card">
+                    {% for el in userDetails %}
+                    <div class="card-body text-center">
+                        <br><br>
+                        <img class="card-img-top home-image-size" src="/static/images/card.png" alt="Sign Up">
+                        <h4 class="card-title">Change Password</h4>
+                        <p class="card-text"><button class="btn btn-dark" hx-target="this" hx-swap="outerHTML" hx-get="/change_password/{{el.id}}">Forgot your password? Click here to change it.</button></p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card">
+                    <div class="card-body text-center">
+                        {% for el in userDetails %}
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <img class="card-img-top home-image-size" src="/static/images/Docs.png" alt="Sign Up">
+                                <div hx-target="this" hx-swap="outerHTML">
+                                    <div><label>Username</label>: {{ el.username }}</div>
+                                    <div><label>First Name</label>: {{ el.firstName }}</div>
+                                    <div><label>Last Name</label>: {{ el.surName }}</div>
+                                    <div><label>Email</label>: {{ el.email }}</div>
+                                    <button hx-get="/contact/{{el.id}}" class="btn btn-dark">
+                                    Click To Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</section>
+
+{% endblock %}

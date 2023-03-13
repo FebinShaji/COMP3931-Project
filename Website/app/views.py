@@ -70,3 +70,14 @@ def register():
             return redirect(url_for('login'))
 
     return render_template('register.html', title='Register', form=form)
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+def dashboard():
+    global result
+    result = {}
+    if session.get('user') == None:
+        flash("Need to Login to access")
+        return redirect(url_for('home'))
+    userId=session.get('user')
+    userDetails=models.User.query.filter_by(id=userId)
+    return render_template('dashboard.html', title='Dashboard', userDetails=userDetails)
