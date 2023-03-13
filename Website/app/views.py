@@ -9,6 +9,12 @@ from app import db, models
 def home():
     return render_template('home.html')
 
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    session.clear()
+    print("Logout successful")
+    return render_template('home.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = Login()
