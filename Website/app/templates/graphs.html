@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+    <section class="section justify-content-center" style="background-color: #eee;">
+        <div class="container section-intro">
+            <br>
+            <body>
+                <div id='chart' class='chart'”></div>
+            </body>
+        </div>
+        <br>
+    </section>
+</body>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script>
+    var graphs = {{ graphJSON | safe }};
+    Plotly.plot('chart',graphs,{});
+</script>
+
+</html>

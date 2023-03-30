@@ -423,3 +423,23 @@ def update4(id):
     <button hx-get="/exerciseWeights/{id}" hx-target="#here2" class="btn btn-dark">Click To Edit</button>
     """
     return response
+
+@app.route("/graphs/<int:id>", methods=["PUT", "GET"])
+def graphs(id):
+    userId=session.get('user')
+    workoutId=session.get('workout')
+    workouts=models.Exercises.query.filter_by(userId=userId, workoutId=workoutId, exerciseId=id).order_by(Exercises.date.desc()).all()
+
+    x1 = []
+    y1 = []
+    for el in workouts:
+        x1.append(el.date)
+        y1.append(el.set4weight)
+
+    df = pd.DataFrame(dict(
+        x = x1,
+        y = y1
+    ))
+    fig = px.line(df, x="x", y="y", title="Unsorted Input") 
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template('graphs.html', graphJSON=graphJSON)
