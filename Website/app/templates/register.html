@@ -11,6 +11,10 @@
                         <div class="col-lg-6">
                             <div class="card-body p-md-5 mx-md-4">
 
+                                {% for mesg in get_flashed_messages() %}
+                                    <h6 class="text-center" id="error">{{ mesg }}</h6>
+                                {% endfor %}
+
                                 <div class="text-center">
                                     <p id="thick" href="/">Sign Up to FitZone</p>
                                 </div>
@@ -71,7 +75,7 @@
                                     <div class="field">
                                         <div class="control">
                                             <br>
-                                            <input id="input_text" type="password" name="Confirm Password" placeholder="Confirm Password" hx-post="/check-password/" hx-target="#password-err" hx-trigger="keyup">
+                                            <input id="input_text" type="password" name="Confirm_Password" placeholder="Confirm Password" hx-post="/check-password/" hx-target="#password-err" hx-trigger="keyup">
                                             <div class="text-danger mt-2" id="password-err"></div>
                                         </div>
                                     </div>

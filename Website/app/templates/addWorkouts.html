@@ -3,6 +3,7 @@
 {% block content %}
 
 <section class="section justify-content-center" style="background-color: #eee;">
+
     <div class="container section-intro">
         <br>
         <div class="row ar-center justify-content-center">
@@ -16,6 +17,7 @@
                         </div>
 
                         <form method="POST" action="/addWorkouts/">
+                            
                             <div class="field">
                                 <div class="control">
                                     <input id="input_text" name="Name" placeholder="Workout Name">
@@ -44,14 +46,15 @@
                                 <button
                                     class="button btn btn-dark rounded-pill is-block is-info is-fullwidth">Create Workout</button>
                             </div>
+
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <br>
-    <br>
+    <br><br>
+
 </section>
 
 {% endblock %}

@@ -4,9 +4,7 @@
 
 <section class="h-100 gradient-form" style="background-color: #eee;">
 
-    <br>
-    <br>
-    <br>
+    <br><br><br>
 
     <div>
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -29,7 +27,7 @@
                               </tr>
                             </thead>
                             <tbody hx-target="closest tr" hx-swap="outerHTML">
-                                <button hx-get="/details3/{{el}}" class="btn btn-dark">Add A Set</button>
+                                <button hx-get="/addSet/{{el}}" class="btn btn-dark">Add A Set</button>
                                 <button hx-get="/graphs/{{el}}" class="btn btn-dark">View Your Progress Graph</button>
                                 {% for el in workouts %}
                                 <tr>
@@ -50,10 +48,7 @@
         </div>
     </div>
 
-    <br>
-    <br>
-    <br>
-
+    <br><br><br>
 
 </section>
 

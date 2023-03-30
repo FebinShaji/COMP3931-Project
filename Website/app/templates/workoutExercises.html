@@ -4,9 +4,7 @@
 
 <section class="h-100 gradient-form" style="background-color: #eee;">
 
-    <br>
-    <br>
-    <br>
+    <br><br><br>
 
     <div>
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -15,9 +13,9 @@
 
                     <br>
                     <div id="here" hx-swap="outerHTML" class="card-body text-center">
+                        <h3>Exercises:</h3>
+
                         {% for el in workouts %}
-                        
-                        <h3>Workout:</h3>
 
                         <div class="card">
                             <div class="card-body text-center">
@@ -29,11 +27,11 @@
         
                             </div>
                         </div>
-
+                        <br>
                         {% endfor %}
 
                         <br>
-                        <button hx-get="/details2/" hx-target="#here" class="btn btn-dark">
+                        <button hx-get="/addExercise" hx-target="#here" class="btn btn-dark">
                             Add Exercise
                         </button>
 
@@ -43,9 +41,7 @@
         </div>
     </div>
 
-    <br>
-    <br>
-    <br>
+    <br><br><br>
 
 
 </section>
