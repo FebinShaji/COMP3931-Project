@@ -19,3 +19,14 @@ class Exercise(db.Model):
     userId = db.Column(db.Integer, db.ForeignKey('user.id'))
     workoutId = db.Column(db.Integer, db.ForeignKey('workout.id'))
     exerciseName = db.Column(db.String(50))
+
+class Exercises(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    workoutId = db.Column(db.Integer, db.ForeignKey('workout.id'))
+    exerciseId = db.Column(db.Integer, db.ForeignKey('exercise.id'))
+    date = db.Column(db.DateTime)
+    set1weight = db.Column(db.Float)
+    set2weight = db.Column(db.Float)
+    set3weight = db.Column(db.Float)
+    set4weight = db.Column(db.Float)

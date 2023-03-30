@@ -346,3 +346,80 @@ def delete3(id):
         db.session.delete(exercises)
         db.session.commit()
     return redirect("/exerciseWeights/" + str(exercises.exerciseId))
+
+@app.route("/exerciseWeights/<int:id>", methods=["GET"])
+def exerciseWeights(id):
+    global result
+    result = {}
+    session['exercise'] = id
+    if session.get('user') == None:
+        flash("Need to Login to access")
+        return redirect(url_for('home'))
+    userId=session.get('user')
+    workoutId=session.get('workout')
+    workouts=models.Exercises.query.filter_by(userId=userId, workoutId=workoutId, exerciseId=id).order_by(Exercises.date.desc()).all()
+
+    x1 = []
+    y1 = []
+    for el in workouts:
+        x1.append(el.date)
+        y1.append(el.set4weight)
+
+    df = pd.DataFrame(dict(
+        x = x1,
+        y = y1
+    ))
+    fig = px.line(df, x="x", y="y", title="Unsorted Input") 
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    return render_template('exerciseWeights.html', title='workoutExercises', workouts=workouts, el=id, graphJSON=graphJSON)
+
+@app.route("/details3/<int:id>", methods=["GET"])
+def details3(id):
+    userId=session.get('user')
+    workoutId=session.get('workout')
+    response = f"""
+    <form hx-put="/update4/{id}" hx-target="this">
+        <div>
+            <label>Date</label>
+            <input type="text" name="Date">
+        </div>
+        <div>
+            <label>Set 1:</label>
+            <input type="text" name="Set1">
+        </div>
+        <div>
+            <label>Set 2:</label>
+            <input type="text" name="Set2">
+        </div>
+        <div>
+            <label>Set 3:</label>
+            <input type="text" name="Set3">
+        </div>
+        <div>
+            <label>Set 4:</label>
+            <input type="text" name="Set4">
+        </div>
+        <button class="btn btn-dark">Submit</button>
+        <button class="btn btn-dark" hx-get="/workoutExercises/{workoutId}" hx-target="#here2">Cancel</button>
+    </form> 
+    """
+    return response
+
+@app.route("/update4/<int:id>", methods=["PUT"])
+def update4(id):
+    userId=session.get('user')
+    workoutId=session.get('workout')
+    weightDate = datetime.strptime(request.form.get('Date'), '%d/%m/%Y').date()
+    weightSet1 = request.form.get('Set1')
+    weightSet2 = request.form.get('Set2')
+    weightSet3 = request.form.get('Set3')
+    weightSet4 = request.form.get('Set4')
+    exercise = Exercises(userId=userId, workoutId=workoutId, exerciseId=id, date=weightDate, set1weight=weightSet1, set2weight=weightSet2, set3weight=weightSet3, set4weight=weightSet4)
+    db.session.add(exercise)
+    db.session.commit()
+    response = f"""
+    <p>COnfirm>
+    <button hx-get="/exerciseWeights/{id}" hx-target="#here2" class="btn btn-dark">Click To Edit</button>
+    """
+    return response

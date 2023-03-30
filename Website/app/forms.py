@@ -22,3 +22,13 @@ class Register(Form):
 class Workout(Form):
     Name = TextField('Name', validators=[DataRequired(), length(max=20)])
     Type = TextField('Type', validators=[DataRequired(), length(max=20)])
+
+class Exercise(Form):
+    ExerciseName = TextField('ExerciseName', validators=[DataRequired(), length(max=50)])
+
+class Weights(Form):
+    Date = DateField('Date', validators=[DataRequired(), length(max=20)])
+    Set1 = TextField('Set1', validators=[DataRequired(), length(max=20)])
+    Set2 = TextField('Set2', validators=[DataRequired(), length(max=20)])
+    Set3 = TextField('Set3', validators=[DataRequired(), length(max=20)])
+    Set4 = TextField('Set4', validators=[DataRequired(), length(max=20)])

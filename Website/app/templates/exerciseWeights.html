@@ -1,0 +1,66 @@
+{% extends "base2.html" %}
+
+{% block content %}
+
+<section class="h-100 gradient-form" style="background-color: #eee;">
+
+    <br>
+    <br>
+    <br>
+
+    <div>
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+                <div class="card rounded-3 text-black">
+
+                    <br>
+                    <div id="here" hx-swap="outerHTML" class="card-body text-center">
+                        <h3>Exercise Weights:</h3>
+                        
+                        <table class="table delete-row-example">
+                            <thead>
+                              <tr>
+                                <th>Date:</th>
+                                <th>Set 1:</th>
+                                <th>Set 2:</th>
+                                <th>Set 3:</th>
+                                <th>Set 4:</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody hx-target="closest tr" hx-swap="outerHTML">
+                                <button hx-get="/details3/{{el}}" class="btn btn-dark">Add A Set</button>
+                                <button hx-get="/graphs/{{el}}" class="btn btn-dark">View Your Progress Graph</button>
+                                {% for el in workouts %}
+                                <tr>
+                                    <td>{{el.date}}</td>
+                                    <td>{{el.set1weight}}</td>
+                                    <td>{{el.set2weight}}</td>
+                                    <td>{{el.set3weight}}</td>
+                                    <td>{{el.set4weight}}</td>
+                                    <td><button hx-get="/delete3/{{el.id}}" hx-target="#here2" class="btn btn-dark">Delete</button></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+
+</section>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script>
+    var graphs = {{ graphJSON | safe }};
+    Plotly.plot('chart',graphs,{});
+</script>
+
+{% endblock %}
