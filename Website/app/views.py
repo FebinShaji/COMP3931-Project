@@ -4,6 +4,12 @@ from app import app
 from .forms import *
 from .models import *
 from app import db, models
+from datetime import datetime
+
+import pandas as pd
+import json
+import plotly
+import plotly.express as px
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -105,7 +111,7 @@ def check_password():
         return "These Passwords Don't Match"
     else:
         return ""
-    
+
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     global result
@@ -224,3 +230,14 @@ def update2(id):
         <p class="card-text"><button class="btn btn-dark" hx-get="/change_password/{id}">Forgot your password? Click here to change it.</button></p>
         """
         return response
+
+@app.route('/workouts', methods=['GET', 'POST'])
+def workouts():
+    global result
+    result = {}
+    if session.get('user') == None:
+        flash("Need to Login to access")
+        return redirect(url_for('home'))
+    userId=session.get('user')
+    workouts=models.Workout.query.filter_by(userId=userId)
+    return render_template('workouts.html', title='Workouts', workouts=workouts)

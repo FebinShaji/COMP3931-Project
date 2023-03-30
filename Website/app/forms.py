@@ -2,6 +2,7 @@ from flask_wtf import Form
 from wtforms import TextField
 from wtforms import BooleanField
 from wtforms import PasswordField
+from wtforms import DateField
 from wtforms.validators import DataRequired
 from wtforms.validators import length
 
