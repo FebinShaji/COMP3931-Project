@@ -241,3 +241,23 @@ def workouts():
     userId=session.get('user')
     workouts=models.Workout.query.filter_by(userId=userId)
     return render_template('workouts.html', title='Workouts', workouts=workouts)
+
+@app.route("/addWorkouts/", methods=["GET", "POST"])
+def addWorkouts():
+    global result
+    result = {}
+    form = Workout()
+    if session.get('user') == None:
+        flash("Need to Login to access")
+        return redirect(url_for('home'))
+    userId=session.get('user')
+    userDetails=models.User.query.filter_by(id=userId)
+    if request.method == 'POST':
+        Name = request.form.get('Name')
+        Type = request.form.get('Type')
+        workout = Workout(userId=userId, name=Name, type=Type)
+        db.session.add(workout)
+        db.session.commit()
+        return redirect(url_for('workouts'))
+
+    return render_template('addWorkouts.html', title='addWorkouts', userDetails=userDetails, form=form)

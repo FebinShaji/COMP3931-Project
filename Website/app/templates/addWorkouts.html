@@ -1,0 +1,57 @@
+{% extends "base2.html" %}
+
+{% block content %}
+
+<section class="section justify-content-center" style="background-color: #eee;">
+    <div class="container section-intro">
+        <br>
+        <div class="row ar-center justify-content-center">
+            <div class="card-deck">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <br><br>
+
+                        <div class="text-center">
+                            <p id="thick">Create Your Workout:</p>
+                        </div>
+
+                        <form method="POST" action="/addWorkouts/">
+                            <div class="field">
+                                <div class="control">
+                                    <input id="input_text" name="Name" placeholder="Workout Name">
+                                    {% for error in form.name.errors %}
+                                    <div class="alert alert-danger w-100" role="alert">
+                                        [{{ error }}]
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            <div class="field">
+                                <div class="control">
+                                    <br>
+                                    <input id="input_text" name="Type" placeholder="Workout Type">
+                                    {% for error in form.type.errors %}
+                                    <div class="alert alert-danger w-100" role="alert">
+                                        [{{ error }}]
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            <div class="text-center">
+                                <br>
+                                <button
+                                    class="button btn btn-dark rounded-pill is-block is-info is-fullwidth">Create Workout</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</section>
+
+{% endblock %}

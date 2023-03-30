@@ -18,3 +18,7 @@ class Register(Form):
     Username = TextField('Username', validators=[DataRequired(), length(max=20)])
     Password = PasswordField('Password', validators=[DataRequired(), length(max=20)])
     Confirm_Password = PasswordField('Confirm_Password', validators=[DataRequired(), length(max=20)])
+
+class Workout(Form):
+    Name = TextField('Name', validators=[DataRequired(), length(max=20)])
+    Type = TextField('Type', validators=[DataRequired(), length(max=20)])
