@@ -1,0 +1,53 @@
+{% extends "base2.html" %}
+
+{% block content %}
+
+<section class="h-100 gradient-form" style="background-color: #eee;">
+
+    <br>
+    <br>
+    <br>
+
+    <div>
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+                <div class="card rounded-3 text-black">
+
+                    <br>
+                    <div id="here" hx-swap="outerHTML" class="card-body text-center">
+                        {% for el in workouts %}
+                        
+                        <h3>Workout:</h3>
+
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div hx-swap="outerHTML">
+                                    <div><label>Exercise Name</label>: {{ el.exerciseName }}</div>
+                                </div>
+                                <a href="/exerciseWeights/{{ el.id }}" class="btn btn-dark">Add Weights</a>
+                                <button hx-get="/delete/{{el.id}}" hx-target="#here2" class="btn btn-dark">Delete</button>
+        
+                            </div>
+                        </div>
+
+                        {% endfor %}
+
+                        <br>
+                        <button hx-get="/details2/" hx-target="#here" class="btn btn-dark">
+                            Add Exercise
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+
+</section>
+
+{% endblock %}

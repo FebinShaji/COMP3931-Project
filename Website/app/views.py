@@ -261,3 +261,62 @@ def addWorkouts():
         return redirect(url_for('workouts'))
 
     return render_template('addWorkouts.html', title='addWorkouts', userDetails=userDetails, form=form)
+
+@app.route("/workoutExercises/<int:id>", methods=["GET"])
+def workoutExercises(id):
+    global result
+    result = {}
+    session['workout'] = id
+    if session.get('user') == None:
+        flash("Need to Login to access")
+        return redirect(url_for('home'))
+    userId=session.get('user')
+    print(id)
+    workouts=models.Exercise.query.filter_by(userId=userId, workoutId=id)
+    return render_template('workoutExercises.html', title='workoutExercises', workouts=workouts)
+
+@app.route("/details2/", methods=["GET"])
+def details2():
+    userId=session.get('user')
+    workoutId=session.get('workout')
+    response = f"""
+    <form hx-put="/update3/{userId}" hx-target="this">
+        <div>
+            <label>Exercise Name</label>
+            <input type="text" name="exerciseName" value="Exercise Name">
+        </div>
+        <button class="btn btn-dark">Submit</button>
+        <button class="btn btn-dark" hx-get="/workoutExercises/{workoutId}" hx-target="#here2">Cancel</button>
+    </form> 
+    """
+    return response
+
+@app.route("/update3/<int:id>", methods=["PUT"])
+def update3(id):
+    print(id)
+    userId=session.get('user')
+    workoutId=session.get('workout')
+    exerciseName = request.form.get('exerciseName')
+    exercise = Exercise(userId=userId, workoutId=workoutId, exerciseName=exerciseName)
+    db.session.add(exercise)
+    db.session.commit()
+    
+    response = f"""
+    <p>COnfirm>
+    <button hx-get="/workoutExercises/{workoutId}" hx-target="#here2" class="btn btn-dark">Click To Edit</button>
+    """
+    return response
+
+@app.route("/delete/<int:id>", methods=["PUT", "GET"])
+def delete(id):
+    exercise = models.Exercise.query.get(id)
+    userId=session.get('user')
+    workoutId=session.get('workout')
+    exerciseWeights = models.Exercises.query.filter_by(userId=userId, workoutId=id).all()  
+    if (exercise):
+        db.session.delete(exercise)
+        db.session.commit()
+        for el in exerciseWeights:
+            db.session.delete(el)
+            db.session.commit()
+    return redirect("/workoutExercises/" + str(exercise.workoutId))

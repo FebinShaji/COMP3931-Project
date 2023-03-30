@@ -13,3 +13,9 @@ class Workout(db.Model):
     userId = db.Column(db.Integer, db.ForeignKey('user.id'))
     name = db.Column(db.String(20))
     type = db.Column(db.String(20))
+
+class Exercise(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    workoutId = db.Column(db.Integer, db.ForeignKey('workout.id'))
+    exerciseName = db.Column(db.String(50))
