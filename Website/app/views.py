@@ -320,3 +320,29 @@ def delete(id):
             db.session.delete(el)
             db.session.commit()
     return redirect("/workoutExercises/" + str(exercise.workoutId))
+
+@app.route("/delete2/<int:id>", methods=["PUT", "GET"])
+def delete2(id):
+    userId=session.get('user')
+    exerciseId=session.get('exercise')
+    workout = models.Workout.query.get(id)
+    exercises = models.Exercise.query.filter_by(userId=userId, workoutId=id).all()
+    exerciseWeights = models.Exercises.query.filter_by(userId=userId, workoutId=id).all()  
+    if (workout):
+        db.session.delete(workout)
+        db.session.commit()
+        for el in exercises:
+            db.session.delete(el)
+            db.session.commit()
+            for el2 in exerciseWeights:
+                db.session.delete(el2)
+                db.session.commit()
+    return redirect(url_for('workouts'))
+
+@app.route("/delete3/<int:id>", methods=["PUT", "GET"])
+def delete3(id):
+    exercises = models.Exercises.query.get(id)
+    if (exercises):
+        db.session.delete(exercises)
+        db.session.commit()
+    return redirect("/exerciseWeights/" + str(exercises.exerciseId))
