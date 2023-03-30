@@ -1,0 +1,39 @@
+{% extends "base2.html" %}
+
+{% block content %}
+
+<section class="h-100 gradient-form" style="background-color: #eee;">
+    <br><br><br>
+
+    <div>
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+                <div class="card rounded-3 text-black">
+                    <br>
+                    <div class="card-body text-center">
+                        <h3>Your Summary:</h3>
+                    </div>
+
+                    <div class="card-body text-center">
+                        <p>Number of Total Recorded Workouts: {{el2}}</p>
+                    </div>
+
+                    <div id="here" hx-swap="outerHTML" class="card-body text-center">
+                        <button hx-get="/details4/{{el}}" class="btn btn-dark">Want to track your weight?</button>
+                        <button hx-get="/graphs2/{{el}}" class="btn btn-dark">View Your Weight Progress Graph</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br><br>
+</section>
+
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script>
+    var graphs = {{ graphJSON | safe }};
+    Plotly.plot('chart',graphs,{});
+</script>
+
+{% endblock %}

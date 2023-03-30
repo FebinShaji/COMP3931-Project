@@ -443,3 +443,62 @@ def graphs(id):
     fig = px.line(df, x="x", y="y", title="Unsorted Input") 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return render_template('graphs.html', graphJSON=graphJSON)
+
+@app.route('/summary', methods=['GET', 'POST'])
+def summary():
+    userId=session.get('user')
+    TotalWorkouts=models.Exercises.query.filter_by(userId=userId).count()
+    return render_template('summary.html', el=userId, el2=TotalWorkouts)
+
+@app.route("/details4/<int:id>", methods=["GET"])
+def details4(id):
+    userId=session.get('user')
+    workoutId=session.get('workout')
+    response = f"""
+    <form hx-put="/update5/{id}" hx-target="this">
+        <div>
+            <label>Date</label>
+            <input type="text" name="Date">
+        </div>
+        <div>
+            <label>Weight:</label>
+            <input type="text" name="weight">
+        </div>
+        <button class="btn btn-dark">Submit</button>
+        <button class="btn btn-dark" hx-get="/summary" hx-target="#here2">Cancel</button>
+    </form>
+    """
+    return response
+
+@app.route("/update5/<int:id>", methods=["PUT"])
+def update5(id):
+    userId=session.get('user')
+    weightDate = datetime.strptime(request.form.get('Date'), '%d/%m/%Y').date()
+    weight = request.form.get('weight')
+    weights = UserWeight(userId=userId, date=weightDate, weight=weight)
+    db.session.add(weights)
+    db.session.commit()
+    response = f"""
+    <p>COnfirm>
+    <button hx-get="/summary" hx-target="#here2" class="btn btn-dark">Click To Edit</button>
+    """
+    return response
+
+@app.route("/graphs2/<int:id>", methods=["PUT", "GET"])
+def graphs2(id):
+    userId=session.get('user')
+    weights = models.UserWeight.query.filter_by(userId=userId).order_by(UserWeight.date.desc()).all()
+
+    x1 = []
+    y1 = []
+    for el in weights:
+        x1.append(el.date)
+        y1.append(el.weight)
+
+    df = pd.DataFrame(dict(
+        x = x1,
+        y = y1
+    ))
+    fig = px.line(df, x="x", y="y", title="Unsorted Input") 
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template('graphs.html', graphJSON=graphJSON)

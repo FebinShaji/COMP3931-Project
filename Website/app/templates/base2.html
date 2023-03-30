@@ -43,17 +43,21 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
+                    <form class="form-inline" action="/summary">
+                        <button class="btn btn-light rounded-pill" type="submit" value="AboutUs">Summary</button>
+                    </form>
+                </li>
+                <li class="nav-item px-2">
                     <form class="form-inline" action="/workouts">
                         <button class="btn btn-light rounded-pill" type="submit" value="AboutUs">Workouts</button>
                     </form>
                 </li>
-                <li class="nav-item px-2">
+                <li class="nav-item">
                     <form class="form-inline" action="/logout">
                         <button class="btn btn-light rounded-pill" type="submit" value="logout">Logout</button>
                     </form>
                 </li>
-                <li class="nav-item px-2"><a class="nav-link" href="/dashboard"><i class="fas fa-user"></i></a>
-                </li>
+                <li class="nav-item px-2"><a class="nav-link" href="/dashboard"><i class="fas fa-user"></i></a></li>
             </ul>
         </div>
     </nav>

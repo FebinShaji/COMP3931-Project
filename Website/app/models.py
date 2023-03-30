@@ -14,6 +14,12 @@ class Workout(db.Model):
     name = db.Column(db.String(20))
     type = db.Column(db.String(20))
 
+class UserWeight(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, db.ForeignKey('user.id'))
+    date = db.Column(db.DateTime)
+    weight = db.Column(db.Float)
+
 class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, db.ForeignKey('user.id'))
