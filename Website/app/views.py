@@ -9,6 +9,8 @@ import pandas as pd
 import json
 import plotly
 import plotly.express as px
+import numpy as np
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -326,14 +328,18 @@ def addExercise():
     workoutId=session.get('workout')
 
     response = f"""
-    <form hx-put="/updateAddExercise/{userId}" hx-target="this">
+    <form hx-put="/updateAddExercise/{userId}" hx-target="this" class="card-body text-center">
+        <div class="text-center">
+            <u><p id="thick">Add Your Exercise:</p></u>
+        </div>
         <div>
-            <label>Exercise Name</label>
-            <input type="text" name="exerciseName" value="Exercise Name">
+            <label>Exercise Name:</label>
+            <input type="text" name="exerciseName">
         </div>
         <button class="btn btn-dark">Submit</button>
         <button class="btn btn-dark" hx-get="/workoutExercises/{workoutId}" hx-target="#here2">Cancel</button>
     </form> 
+    <br>
     """
 
     return response
@@ -352,7 +358,7 @@ def updateAddExercise(id):
     db.session.commit()
 
     response = f"""
-    <p>COnfirm>
+    <p>Confirm>
     <button hx-get="/workoutExercises/{workoutId}" hx-target="#here2" class="btn btn-dark">Click To Edit</button>
     """
 
@@ -432,33 +438,32 @@ def exerciseWeights(id):
 @app.route("/addSet/<int:id>", methods=["GET"])
 def addSet(id):
 
-    workoutId=session.get('workout')
-
     response = f"""
     <form hx-put="/updateAddSet/{id}" hx-target="this">
         <div>
-            <label>Date</label>
-            <input type="text" name="Date">
+            <label>Date:</label>
+            <input type="text" name="Date" placeholder="DD/MM/YYYY">
         </div>
         <div>
             <label>Set 1:</label>
-            <input type="text" name="Set1">
+            <input type="text" name="Set1" placeholder="KG">
         </div>
         <div>
             <label>Set 2:</label>
-            <input type="text" name="Set2">
+            <input type="text" name="Set2" placeholder="KG">
         </div>
         <div>
             <label>Set 3:</label>
-            <input type="text" name="Set3">
+            <input type="text" name="Set3" placeholder="KG">
         </div>
         <div>
             <label>Set 4:</label>
-            <input type="text" name="Set4">
+            <input type="text" name="Set4" placeholder="KG">
         </div>
         <button class="btn btn-dark">Submit</button>
-        <button class="btn btn-dark" hx-get="/workoutExercises/{workoutId}" hx-target="#here2">Cancel</button>
-    </form> 
+        <button class="btn btn-dark" hx-get="/exerciseWeights/{id}" hx-target="#here2">Cancel</button>
+    </form>
+    <br>
     """
 
     return response
@@ -476,12 +481,15 @@ def updateAddSet(id):
     weightSet3 = request.form.get('Set3')
     weightSet4 = request.form.get('Set4')
 
-    exercise = Exercises(userId=userId, workoutId=workoutId, exerciseId=id, date=weightDate, set1weight=weightSet1, set2weight=weightSet2, set3weight=weightSet3, set4weight=weightSet4)
-    db.session.add(exercise)
-    db.session.commit()
+    if weightSet1.isalpha() or weightSet2.isalpha() or weightSet3.isalpha() or weightSet4.isalpha():
+        flash("Please make sure only numbers are entered")
+    else:
+        exercise = Exercises(userId=userId, workoutId=workoutId, exerciseId=id, date=weightDate, set1weight=weightSet1, set2weight=weightSet2, set3weight=weightSet3, set4weight=weightSet4)
+        db.session.add(exercise)
+        db.session.commit()
 
     response = f"""
-    <p>COnfirm>
+    <p>Confirm>
     <button hx-get="/exerciseWeights/{id}" hx-target="#here2" class="btn btn-dark">Click To Edit</button>
     """
 
@@ -499,15 +507,20 @@ def graphs(id):
     x1 = []
     y1 = []
     for el in workouts:
+        z1 = np.array([])
         x1.append(el.date)
-        y1.append(el.set4weight)
+        z1 = np.append(z1, el.set1weight)
+        z1 = np.append(z1, el.set2weight)
+        z1 = np.append(z1, el.set3weight)
+        z1 = np.append(z1, el.set4weight)
+        y1.append(z1.max())
 
     df = pd.DataFrame(dict(
         x = x1,
         y = y1
     ))
 
-    fig = px.line(df, x="x", y="y", title="Unsorted Input") 
+    fig = px.line(df, x="x", y="y", title="Exercise Weight Progress Chart").update_layout(xaxis_title="Date", yaxis_title="Weight (Kg)")
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     return render_template('graphs.html', graphJSON=graphJSON)
@@ -525,8 +538,6 @@ def summary():
 
 @app.route("/addUserWeight", methods=["GET"])
 def addUserWeight():
-
-    userId=session.get('user')
 
     response = f"""
     <form hx-put="/updateUserWeight" hx-target="this">
@@ -584,7 +595,7 @@ def graphs2():
         y = y1
     ))
 
-    fig = px.line(df, x="x", y="y", title="Unsorted Input") 
+    fig = px.line(df, x="x", y="y", title="Your Weight Progress Chart").update_layout(xaxis_title="Date", yaxis_title="Weight (Kg)")
 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 

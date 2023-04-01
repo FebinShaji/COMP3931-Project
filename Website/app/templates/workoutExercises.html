@@ -7,13 +7,15 @@
     <br><br><br>
 
     <div>
-        <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="d-flex justify-content-center align-items-center h-100">
             <div class="col-xl-10">
                 <div class="card rounded-3 text-black">
 
                     <br>
                     <div id="here" hx-swap="outerHTML" class="card-body text-center">
-                        <h3>Exercises:</h3>
+                        <u><h3 id="thick">Exercises:</h3></u>
+                        <button hx-get="/addExercise" hx-target="#here" class="btn btn-dark">Add Exercise</button>
+                        <p></p>
 
                         {% for el in workouts %}
 
@@ -29,11 +31,6 @@
                         </div>
                         <br>
                         {% endfor %}
-
-                        <br>
-                        <button hx-get="/addExercise" hx-target="#here" class="btn btn-dark">
-                            Add Exercise
-                        </button>
 
                     </div>
                 </div>

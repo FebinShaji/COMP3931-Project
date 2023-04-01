@@ -7,20 +7,26 @@
     <br><br><br>
 
     <div>
-        <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="d-flex justify-content-center align-items-center h-100">
             <div class="col-xl-10">
                 <div class="card rounded-3 text-black">
 
                     <br>
-                    <div class="card-body text-center">
-                        <h3 class="mb-4 text-center" id="thick">Your Workouts:</h3>
+                    <div id="here" hx-swap="outerHTML" class="card-body text-center">
+                        <u><h3 id="thick">Your Workouts:</h3></u>
                         <a href="/addWorkouts" class="btn btn-dark">Add A Workout</a> 
+                        <p></p>
 
                         {% for el in workouts %}
-                          <h1>{{el.name}}</h1>
-                          <p>{{el.type}}</p>
-                          <a href="/workoutExercises/{{ el.id }}" class="btn btn-dark">Add Exercises</a>
-                          <button hx-get="/delete2/{{el.id}}" hx-target="#here2" class="btn btn-dark">Delete</button>
+
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div><label>{{el.name}}</label>: {{ el.type }}</div>
+                                <a href="/workoutExercises/{{ el.id }}" class="btn btn-dark">Add Exercises</a>
+                                <button hx-get="/delete2/{{el.id}}" hx-target="#here2" class="btn btn-dark">Delete</button>
+                            </div>
+                        </div>
+                        <br>
                         {% endfor %}
 
                     </div>

@@ -5,11 +5,11 @@
 <section class="section justify-content-center" style="background-color: #eee;">
     <div class="container section-intro">
         <br>
-        <h3 class="mb-4 text-center" id="thick">
-            Your Profile
-        </h3>
+        <u><h3 class="mb-4 text-center" id="thick">Your Profile</h3></u>
         <div class="row ar-center justify-content-center">
             <div class="card-deck">
+                <div class="card">
+                <div class="card-body text-center">
                 <div class="card">
                     {% for el in userDetails %}
                     <div class="card-body text-center">
@@ -19,7 +19,7 @@
                         <p class="card-text"><button class="btn btn-dark" hx-target="this" hx-swap="outerHTML" hx-get="/changePassword">Forgot your password? Click here to change it.</button></p>
                     </div>
                     {% endfor %}
-                </div>
+                </div></div></div>
                 <div class="card">
                     <div class="card-body text-center">
                         {% for el in userDetails %}
