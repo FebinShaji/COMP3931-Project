@@ -1,15 +1,3 @@
-a:hover {
-    color: darkblue;
-}
-   
-.home-image {
-    background-size: cover;
-}
-
-input[type="text"]::placeholder {
-    padding-left: 15px;
-}
-
 .navbar-custom {
     margin-left: 75px;
     margin-right: 75px;
@@ -18,29 +6,10 @@ input[type="text"]::placeholder {
     background-color: white;
 }
 
-.custom-li {
-    padding: 50;
-    display: flex;
-    justify-content: space-between;
-    list-style-type: none;
-}
-
-#custom-menu {
-    width: 250px;
-}
-
 .form-control {
     padding: 25px;
     margin-bottom: 10px;
     max-width: 100%;
-}
-
-.btn-link {
-    color: black;
-}
-
-a.thick {
-    font-size: 250%;
 }
 
 .navbar {
@@ -48,47 +17,6 @@ a.thick {
     border-radius: 0;
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
-}
-
-.card-text {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 200;
-    font-size: 100%;
-}
-
-footer {
-    background-color: #f2f2f2;
-    padding: 25px;
-}
-
-#title {
-    margin-top: 50px;
-    margin-bottom: 25px;
-    border-radius: 0;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 600;
-}
-
-.card-image {
-    width: 200px;
-    height: 300px;
-    object-fit: cover;
-}
-
-.card-title {
-    border-radius: 0;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 600;
-}
-
-.card-style {
-    min-height: 600px;
-}
-
-.extra-text {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 200;
-    font-size: 50%;
 }
 
 #input_text {
@@ -100,88 +28,10 @@ footer {
     border-radius: 12px;
 }
 
-#small-text-box {
-    font-family: 'Outfit', sans-serif;
-    padding: 5px;
-    padding-left: 10px;
-    width: 50%;
-    height: 40px;
-    border-radius: 8px;
-}
-
 #thick {
     font-family: 'Outfit', sans-serif;
     font-weight: 600;
     font-size: 250%;
-}
-
-#sub-title {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 600;
-    font-size: 150%;
-}
-
-a:link {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 400;
-}
-
-.issuebox {
-    max-width: 70%;
-    min-height: 70%;
-    border-radius: 10px;
-    padding: 10px;
-}
-
-.scooteridbox {
-    max-width: 70%;
-    height: 50px;
-    border-radius: 10px;
-    font-family: 'Outfit', sans-serif;
-    font-weight: 200;
-    font-size: 100%;
-    padding: 10px;
-}
-
-.home-image-size {
-    max-width: 150px;
-    padding-top: 20px;
-    padding-right: 20px;
-    padding-bottom: 20px;
-    padding-left: 20px;
-}
-
-.price-style {
-    border-radius: 16px;
-    border: 1px solid #ccc;
-}
-
-.home-scooter-image {
-    height: 350px;
-    background-size: contain;
-    max-width: 100%;
-    background-position: center;
-    background-size: cover;
-}
-
-.footer-links {
-    color: grey;
-    font-size: 50%;
-}
-
-.change-password {
-    height: auto; 
-    width: 500px;
-}
-
-.link-to {
-    color: gray;
-}
-
-.book-box {
-    border-radius: 15px;
-    width: 300px;
-    height: 40px;
 }
 
 .dropdown-size {
