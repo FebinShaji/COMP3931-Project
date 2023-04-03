@@ -191,12 +191,45 @@ def updateUserDetails():
     user.firstName = request.form["firstName"]
     user.surName = request.form["lastName"]
     email = request.form["Email"]
-        
+    db.session.commit()
+
     checkUser = models.User.query.filter_by(email=email).first()
     checkUser2 = models.User.query.filter_by(username=username).first()
 
-    if checkUser or checkUser2:
-        flash("This Email or Username Is Already Registered To An Account")
+    if checkUser and checkUser2:
+        response = f"""
+        <p> This Email and Username Already Exist </p>
+        <div><label>Username</label>: { user.username }</div>
+        <div><label>First Name</label>: { user.firstName }</div>
+        <div><label>Last Name</label>: { user.surName }</div>
+        <div><label>Email</label>: { user.email }</div>
+        <button hx-get="/changeUserDetails" class="btn btn-dark">Click To Edit</button>
+        """
+        return response
+    elif checkUser:
+        user.username = username
+        db.session.commit()
+        response = f"""
+        <p> This Email Already Exists </p>
+        <div><label>Username</label>: { user.username }</div>
+        <div><label>First Name</label>: { user.firstName }</div>
+        <div><label>Last Name</label>: { user.surName }</div>
+        <div><label>Email</label>: { user.email }</div>
+        <button hx-get="/changeUserDetails" class="btn btn-dark">Click To Edit</button>
+        """
+        return response
+    elif checkUser2:
+        user.email = email
+        db.session.commit()
+        response = f"""
+        <p> This Username Already Exists </p>
+        <div><label>Username</label>: { user.username }</div>
+        <div><label>First Name</label>: { user.firstName }</div>
+        <div><label>Last Name</label>: { user.surName }</div>
+        <div><label>Email</label>: { user.email }</div>
+        <button hx-get="/changeUserDetails" class="btn btn-dark">Click To Edit</button>
+        """
+        return response
     else:
         user.username = username
         user.email = email
@@ -255,7 +288,14 @@ def updateChangePassword():
     NewPassword = request.form.get('Password')
     Confirm_NewPassword = request.form.get('Confirm_Password')
 
-    if NewPassword == Confirm_NewPassword:
+    if NewPassword == "" or Confirm_NewPassword == "":
+        response = f"""
+        <p class="card-text">
+        <p> One of the fields have been left empty </p>
+        <button class="btn btn-dark" hx-get="/changePassword">Forgot your password? Click here to change it.</button></p>
+        """
+        return response
+    elif NewPassword == Confirm_NewPassword:
         user.password = generate_password_hash(NewPassword, method='pbkdf2:sha256')
         db.session.commit()
         response = f"""
@@ -265,6 +305,7 @@ def updateChangePassword():
         return response
     else:
         response = f"""
+        <p> These passwords don't match </p>
         <p class="card-text"><button class="btn btn-dark" hx-get="/changePassword">Forgot your password? Click here to change it.</button></p>
         """
 
@@ -299,6 +340,10 @@ def addWorkouts():
     if request.method == 'POST':
         Name = request.form.get('Name')
         Type = request.form.get('Type')
+
+        if Name == "" or Type == "":
+            return redirect(url_for('workouts'))
+
         workout = Workout(userId=userId, name=Name, type=Type)
         db.session.add(workout)
         db.session.commit()
@@ -359,7 +404,7 @@ def updateAddExercise(id):
 
     response = f"""
     <p>Confirm>
-    <button hx-get="/workoutExercises/{workoutId}" hx-target="#here2" class="btn btn-dark">Click To Edit</button>
+    <button hx-get="/workoutExercises/{workoutId}" hx-target="#here2" class="btn btn-dark">Click To Add</button>
     """
 
     return response
@@ -565,13 +610,16 @@ def updateUserWeight():
     weightDate = datetime.strptime(request.form.get('Date'), '%d/%m/%Y').date()
     weight = request.form.get('weight')
 
+    if weightDate == "" or weight == "":
+        return redirect(url_for('summary'))
+
     weights = UserWeight(userId=userId, date=weightDate, weight=weight)
     db.session.add(weights)
     db.session.commit()
 
     response = f"""
-    <p>COnfirm>
-    <button hx-get="/summary" hx-target="#here2" class="btn btn-dark">Click To Edit</button>
+    <p>Confirm>
+    <button hx-get="/summary" hx-target="#here2" class="btn btn-dark">Click To Add</button>
     """
     return response
 
