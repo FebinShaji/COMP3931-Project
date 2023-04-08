@@ -120,15 +120,20 @@ def check_password():
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
+
     if session.get('user') == None:
         return redirect(url_for('home'))
+    
     userId=session.get('user')
+
     userDetails=models.User.query.filter_by(id=userId)
+    
     return render_template('dashboard.html', title='Dashboard', userDetails=userDetails)
 
 
 @app.route("/changeUserDetails", methods=["GET"])
 def changeUserDetails():
+
     if session.get('user') == None:
         return redirect(url_for('home'))
 
@@ -164,6 +169,7 @@ def changeUserDetails():
 
 @app.route("/cancel", methods=["GET"])
 def cancel():
+
     if session.get('user') == None:
         return redirect(url_for('home'))
 
@@ -182,6 +188,7 @@ def cancel():
 
 @app.route("/updateUserDetails", methods=["PUT"])
 def updateUserDetails():
+
     if session.get('user') == None:
         return redirect(url_for('home'))
 
@@ -269,9 +276,22 @@ def changePassword():
         </div>
         <br>
         <div class="field">
-            <button class="button btn btn-dark rounded-pill is-block is-info is-fullwidth card-text">Change Password</button>
+            <button class="btn btn-dark">Change Password</button>
+            <button class="btn btn-dark" hx-get="/cancel2">Cancel</button>
         </div>
     </form>
+    """
+
+    return response
+
+@app.route("/cancel2", methods=["GET"])
+def cancel2():
+
+    if session.get('user') == None:
+        return redirect(url_for('home'))
+    
+    response = f"""
+    <p class="card-text"><button class="btn btn-dark" hx-target="this" hx-swap="outerHTML" hx-get="/changePassword">Forgot your password? Click here to change it.</button></p>
     """
 
     return response
@@ -362,12 +382,17 @@ def workoutExercises(id):
     
     userId=session.get('user')
     workouts=models.Exercise.query.filter_by(userId=userId, workoutId=id)
+    name=models.Workout.query.filter_by(id=session['workout']).first()
 
-    return render_template('workoutExercises.html', title='workoutExercises', workouts=workouts)
+
+    return render_template('workoutExercises.html', title='workoutExercises', workouts=workouts, name=name.name)
 
 
 @app.route("/addExercise", methods=["GET"])
 def addExercise():
+
+    if session.get('user') == None:
+        return redirect(url_for('home'))
 
     userId=session.get('user')
     workoutId=session.get('workout')
@@ -393,6 +418,9 @@ def addExercise():
 @app.route("/updateAddExercise/<int:id>", methods=["PUT"])
 def updateAddExercise(id):
 
+    if session.get('user') == None:
+        return redirect(url_for('home'))
+
     userId=session.get('user')
     workoutId=session.get('workout')
 
@@ -413,6 +441,9 @@ def updateAddExercise(id):
 @app.route("/delete/<int:id>", methods=["PUT", "GET"])
 def delete(id):
 
+    if session.get('user') == None:
+        return redirect(url_for('home'))
+
     exercise = models.Exercise.query.get(id)
 
     userId=session.get('user')
@@ -431,6 +462,9 @@ def delete(id):
 
 @app.route("/delete2/<int:id>", methods=["PUT", "GET"])
 def delete2(id):
+
+    if session.get('user') == None:
+        return redirect(url_for('home'))
 
     userId=session.get('user')
 
@@ -455,6 +489,9 @@ def delete2(id):
 @app.route("/delete3/<int:id>", methods=["PUT", "GET"])
 def delete3(id):
 
+    if session.get('user') == None:
+        return redirect(url_for('home'))
+
     exercises = models.Exercises.query.get(id)
 
     if (exercises):
@@ -476,12 +513,17 @@ def exerciseWeights(id):
     workoutId=session.get('workout')
 
     workouts=models.Exercises.query.filter_by(userId=userId, workoutId=workoutId, exerciseId=id).order_by(Exercises.date.desc()).all()
+    name=models.Exercise.query.filter_by(id=id).first()
 
-    return render_template('exerciseWeights.html', title='workoutExercises', workouts=workouts, el=id)
+
+    return render_template('exerciseWeights.html', title='workoutExercises', workouts=workouts, el=id, name=name.exerciseName)
 
 
 @app.route("/addSet/<int:id>", methods=["GET"])
 def addSet(id):
+
+    if session.get('user') == None:
+        return redirect(url_for('home'))
 
     response = f"""
     <form hx-put="/updateAddSet/{id}" hx-target="this">
@@ -517,6 +559,9 @@ def addSet(id):
 @app.route("/updateAddSet/<int:id>", methods=["PUT"])
 def updateAddSet(id):
 
+    if session.get('user') == None:
+        return redirect(url_for('home'))
+
     userId=session.get('user')
     workoutId=session.get('workout')
 
@@ -535,7 +580,7 @@ def updateAddSet(id):
 
     response = f"""
     <p>Confirm>
-    <button hx-get="/exerciseWeights/{id}" hx-target="#here2" class="btn btn-dark">Click To Edit</button>
+    <button hx-get="/exerciseWeights/{id}" hx-target="#here2" class="btn btn-dark">Click To Add</button>
     """
 
     return response
@@ -544,11 +589,14 @@ def updateAddSet(id):
 @app.route("/graphs/<int:id>", methods=["PUT", "GET"])
 def graphs(id):
 
+    if session.get('user') == None:
+        return redirect(url_for('home'))
+
     userId=session.get('user')
     workoutId=session.get('workout')
 
     workouts=models.Exercises.query.filter_by(userId=userId, workoutId=workoutId, exerciseId=id).order_by(Exercises.date.desc()).all()
-
+    name=models.Exercise.query.filter_by(id=id).first()
     x1 = []
     y1 = []
     for el in workouts:
@@ -565,7 +613,8 @@ def graphs(id):
         y = y1
     ))
 
-    fig = px.line(df, x="x", y="y", title="Exercise Weight Progress Chart").update_layout(xaxis_title="Date", yaxis_title="Weight (Kg)")
+    fig = px.line(df, x="x", y="y", title= str(name.exerciseName) + ": Weight Progress Chart").update_layout(xaxis_title="Date", yaxis_title="Weight (Kg)")
+    fig.update_traces(mode="markers+lines")
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
     return render_template('graphs.html', graphJSON=graphJSON)
@@ -573,6 +622,9 @@ def graphs(id):
 
 @app.route('/summary', methods=['GET', 'POST'])
 def summary():
+
+    if session.get('user') == None:
+        return redirect(url_for('home'))
 
     userId=session.get('user')
 
@@ -584,18 +636,22 @@ def summary():
 @app.route("/addUserWeight", methods=["GET"])
 def addUserWeight():
 
+    if session.get('user') == None:
+        return redirect(url_for('home'))
+
     response = f"""
     <form hx-put="/updateUserWeight" hx-target="this">
         <div>
-            <label>Date</label>
-            <input type="text" name="Date">
+            <label>Date:</label>
+            <input type="text" name="Date" placeholder="DD/MM/YYYY">
         </div>
         <div>
             <label>Weight:</label>
-            <input type="text" name="weight">
+            <input type="text" name="weight" placeholder="KG">
         </div>
         <button class="btn btn-dark">Submit</button>
         <button class="btn btn-dark" hx-get="/summary" hx-target="#here2">Cancel</button>
+        <p></p>
     </form>
     """
 
@@ -604,6 +660,9 @@ def addUserWeight():
 
 @app.route("/updateUserWeight", methods=["PUT"])
 def updateUserWeight():
+
+    if session.get('user') == None:
+        return redirect(url_for('home'))
 
     userId=session.get('user')
 
@@ -626,6 +685,9 @@ def updateUserWeight():
 
 @app.route("/graphs2", methods=["PUT", "GET"])
 def graphs2():
+        
+    if session.get('user') == None:
+        return redirect(url_for('home'))
 
     userId=session.get('user')
 
@@ -644,6 +706,7 @@ def graphs2():
     ))
 
     fig = px.line(df, x="x", y="y", title="Your Weight Progress Chart").update_layout(xaxis_title="Date", yaxis_title="Weight (Kg)")
+    fig.update_traces(mode="markers+lines")
 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 

@@ -16,7 +16,7 @@
                         <h6 class="text-center" id="error">{{ mesg }}</h6>
                     {% endfor %}
                     <div id="here" hx-swap="outerHTML" class="card-body text-center">
-                        <u><h3 id="thick">Weights:</h3></u>
+                        <u><h3 id="thick">{{name}} - Weights:</h3></u>
                         
                         <table class="table table-striped table-bordered table-hover table-responsive-sm delete-row-example">
                             <thead>
@@ -31,7 +31,7 @@
                             </thead>
                             <tbody hx-target="closest tr" hx-swap="outerHTML">
                                 <button hx-get="/addSet/{{el}}" class="btn btn-dark">Add A Set</button>
-                                &nbsp;
+                                <p></p>
                                 <button hx-get="/graphs/{{el}}" class="btn btn-dark">View Your Progress Graph</button>
                                 <p></p>
                                 {% for el in workouts %}
