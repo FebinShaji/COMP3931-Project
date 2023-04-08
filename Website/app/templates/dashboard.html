@@ -14,7 +14,7 @@
                     {% for el in userDetails %}
                     <div class="card-body text-center">
                         <br><br>
-                        <img class="card-img-top home-image-size" src="/static/images/card.png" alt="Sign Up">
+                        <img class="home-image-size" src="/static/images/card.png" alt="Sign Up">
                         <h4 class="card-title">Change Password</h4>
                         <p class="card-text"><button class="btn btn-dark" hx-target="this" hx-swap="outerHTML" hx-get="/changePassword">Forgot your password? Click here to change it.</button></p>
                     </div>
@@ -25,7 +25,7 @@
                         {% for el in userDetails %}
                         <div class="card">
                             <div class="card-body text-center">
-                                <img class="card-img-top home-image-size" src="/static/images/Docs.png" alt="Sign Up">
+                                <img class="home-image-size" src="/static/images/Docs.png" alt="Sign Up">
                                 <div hx-target="this" hx-swap="outerHTML">
                                     <div><label>Username</label>: {{ el.username }}</div>
                                     <div><label>First Name</label>: {{ el.firstName }}</div>
